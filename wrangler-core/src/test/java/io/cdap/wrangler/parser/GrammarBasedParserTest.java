@@ -65,6 +65,25 @@ public class GrammarBasedParserTest {
   }
 
   @Test
+    public void testValidByteSizeParsingInRecipe() {
+        String recipe = "directive column :size 10KB;";
+        ParserResult result = parseRecipe(recipe);
+        Assert.assertTrue(result.isSuccessful());
+    }
+  @Test
+    public void testValidTimeDurationParsingInRecipe() {
+        String recipe = "directive column :duration 5ms;";
+        ParserResult result = parseRecipe(recipe);
+        Assert.assertTrue(result.isSuccessful());
+    }
+
+    @Test
+    public void testInvalidSyntaxHandling() {
+        String invalidRecipe = "directive column :size 10XYZ;"; // Invalid unit
+        ParserResult result = parseRecipe(invalidRecipe);
+        Assert.assertFalse(result.isSuccessful());
+    }
+  @Test
   public void testCommentOnlyRecipe() throws Exception {
     String[] recipe = new String[] {
       "// test"
