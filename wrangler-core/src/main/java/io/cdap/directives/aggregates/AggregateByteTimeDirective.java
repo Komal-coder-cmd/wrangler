@@ -46,27 +46,40 @@ public class AggregateByteTimeDirective implements Directive {
 
         if (args.size() > 4) this.outputSizeUnit = args.get(4).getToken().value().toString();
         if (args.size() > 5) this.outputTimeUnit = args.get(5).getToken().value().toString();
+        if (args.size() > 6) this.aggregationType = args.get(6).getToken().value().toString();
+    
     }
 
     @Override
-    public void execute(Row row, ExecutorContext context) {
-        Object byteSizeVal = row.getValue(byteSizeColumn);
-        Object timeDurationVal = row.getValue(timeDurationColumn);
+   @Override
+public void execute(Row row, ExecutorContext context) {
+    Object byteSizeVal = row.getValue(byteSizeColumn);
+    Object timeDurationVal = row.getValue(timeDurationColumn);
 
-        if (byteSizeVal instanceof ByteSize && timeDurationVal instanceof TimeDuration) {
-            totalBytes += ((ByteSize) byteSizeVal).getBytes();
-            totalTimeNano += ((TimeDuration) timeDurationVal).getMilliseconds() * 1_000_000;
-            rowCount++;
-        }
+    if (byteSizeVal instanceof ByteSize && timeDurationVal instanceof TimeDuration) {
+        totalBytes += ((ByteSize) byteSizeVal).getBytes();
+        totalTimeNano += ((TimeDuration) timeDurationVal).getMilliseconds() * 1_000_000;
+        rowCount++;
     }
+}
 
-    @Override
-    public void finalizeDirective(ExecutorContext context) {
-        long finalSize = convertBytes(totalBytes);
-        long finalTime = convertTime(totalTimeNano);
 
-        context.write(new Row().add(totalSizeColumn, finalSize).add(totalTimeColumn, finalTime));
-    }
+   
+public void finalizeDirective(ExecutorContext context) {
+    // Retrieve final totals from the Store
+    long finalSize = convertBytes(totalBytes);
+    long finalTime = convertTime(totalTimeNano);
+
+    // Create a new row containing calculated aggregate values
+    Row resultRow = new Row();
+    resultRow.add(totalSizeColumn, finalSize);
+    resultRow.add(totalTimeColumn, finalTime);
+
+    // Write the final row to the context
+    context.write(resultRow);
+}
+
+
 
     private long convertBytes(long bytes) {
         switch (outputSizeUnit) {
