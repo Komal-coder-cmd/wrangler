@@ -56,4 +56,7 @@ public interface Token extends Serializable {
    * @return {@code JsonElement} object containing members of  implementing class.
    */
   JsonElement toJson();
+  Token token = visitor.visit(ctx);
+  tokenGroup.addToken(token);
+
 }
