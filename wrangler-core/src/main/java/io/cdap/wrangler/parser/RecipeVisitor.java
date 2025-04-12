@@ -96,6 +96,33 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     builder.addToken(new Identifier(ctx.Identifier().getText()));
     return super.visitIdentifier(ctx);
   }
+@Override
+public Token visitByteSizeArg(DirectivesParser.ByteSizeArgContext ctx) {
+    String byteSizeValue = ctx.getText();
+    return new ByteSize(byteSizeValue);
+}
+
+@Override
+public Token visitTimeDurationArg(DirectivesParser.TimeDurationArgContext ctx) {
+    String timeDurationValue = ctx.getText();
+    return new TimeDuration(timeDurationValue);
+}
+
+@Override
+public Token visitValue(DirectivesParser.ValueContext ctx) {
+    if (ctx.BYTE_SIZE() != null) {
+        return new ByteSize(ctx.getText());
+    } else if (ctx.TIME_DURATION() != null) {
+        return new TimeDuration(ctx.getText());
+    } else if (ctx.NUMERIC() != null) {
+        return new Numeric(ctx.getText());
+    } else if (ctx.BOOLEAN() != null) {
+        return new Bool(ctx.getText());
+    } else if (ctx.TEXT() != null) {
+        return new Text(ctx.getText());
+    }
+    return null;
+}
 
   /**
    * A Directive can include properties (which are a collection of key and value pairs),
