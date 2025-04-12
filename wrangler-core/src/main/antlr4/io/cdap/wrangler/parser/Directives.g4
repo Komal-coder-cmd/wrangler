@@ -143,6 +143,13 @@ value
  : String | Number | Column | Bool
  ;
 
+byteSizeArg
+ : BYTE_SIZE
+ ;
+
+timeDurationArg
+ : TIME_DURATION
+ ;
 ecommand
  : '!' Identifier
  ;
@@ -199,6 +206,21 @@ identifierList
 /*
  * Following are the Lexer Rules used for tokenizing the recipe.
  */
+BYTE_SIZE
+ : Number BYTE_UNIT
+ ;
+
+TIME_DURATION
+ : Number TIME_UNIT
+ ;
+
+fragment BYTE_UNIT
+ : 'B' | 'KB' | 'MB' | 'GB' | 'TB'
+ ;
+
+fragment TIME_UNIT
+ : 'ms' | 's' | 'm' | 'h' | 'd'
+ ;
 OBrace   : '{';
 CBrace   : '}';
 SColon   : ';';
