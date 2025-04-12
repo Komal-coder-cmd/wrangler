@@ -18,6 +18,9 @@ public class AggregateStatsDirectiveTest {
     private AggregateByteTimeDirective directive;
     private ExecutorContext context;
 
+    String[] recipe = {
+            "aggregate-stats :data_transfer_size :response_time total_size_mb total_time_sec"
+        };
     @Before
     public void setUp() {
         directive = new AggregateByteTimeDirective();
@@ -49,7 +52,11 @@ public class AggregateStatsDirectiveTest {
 
         directive.finalizeDirective(context);
         Row result = context.getFinalRow();
+        List<Row> outputData = TestingRig.execute(recipe, inputData);
 
+        // Verify results
+        Assert.assertEquals(1, outputData.size());
+        Row resultRow = outputData.get(0);
         Assert.assertEquals(35, result.getValue("total_size_mb"));  // 35 MB total
         Assert.assertEquals(18, result.getValue("total_time_sec"));  // 18 seconds total
     }
