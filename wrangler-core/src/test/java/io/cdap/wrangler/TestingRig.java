@@ -61,6 +61,10 @@ public final class TestingRig {
    * @param inputSchema {@link Schema} of the input data
    * @return {@link Schema} of output after transformation
    */
+  String[] recipe = new String[] {
+    "aggregate-stats :data_transfer_size :response_time total_size_mb total_time_sec"
+};
+
   public static Schema executeAndGetSchema(String[] recipe, List<Row> rows, Schema inputSchema)
     throws DirectiveParseException, DirectiveLoadException, RecipeException {
     ExecutorContext context = new TestingPipelineContext().setSchemaManagementEnabled();
@@ -91,6 +95,15 @@ public final class TestingRig {
     RecipeParser parser = new GrammarBasedParser(Contexts.SYSTEM, migrate, registry);
     return new RecipePipelineExecutor(parser, context).execute(rows);
   }
+
+  List<Row> inputData = Arrays.asList(
+    new Row().add("data_transfer_size", new ByteSize("10MB"))
+             .add("response_time", new TimeDuration("5s")),
+    new Row().add("data_transfer_size", new ByteSize("20MB"))
+             .add("response_time", new TimeDuration("10s")),
+    new Row().add("data_transfer_size", new ByteSize("5MB"))
+             .add("response_time", new TimeDuration("3s"))
+);
 
   /**
    * Executes the directives on the record specified and returns the results as well as the errors.
