@@ -90,5 +90,12 @@ public final class TokenDefinition implements Serializable {
   public TokenType type() {
     return type;
   }
-
+public boolean isValidDirectiveArgument() {
+    return type == TokenType.STRING ||
+           type == TokenType.NUMERIC ||
+           type == TokenType.BOOLEAN ||
+           type == TokenType.COLUMN_NAME ||
+           type == TokenType.BYTE_SIZE ||     //add ByteSize (Modified Content)
+           type == TokenType.TIME_DURATION;   //add TimeDuration (Modified Content)
+  }
 }
