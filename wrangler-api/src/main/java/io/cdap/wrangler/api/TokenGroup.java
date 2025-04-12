@@ -50,6 +50,9 @@ public final class TokenGroup {
   public Token get(int i) {
     return tokens.get(i);
   }
+public void addToken(Token token) {
+    tokens.add(token);
+}
 
   public Iterator<Token> iterator() {
     return tokens.iterator();
