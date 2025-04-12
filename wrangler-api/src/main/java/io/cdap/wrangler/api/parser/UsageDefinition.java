@@ -233,6 +233,18 @@ public final class UsageDefinition implements Serializable {
       currentOrdinal++;
       tokens.add(spec);
     }
+@Override
+public UsageDefinition define() {
+    return UsageDefinition.builder("aggregate-bytes-time")
+            .addToken("byteSizeColumn", TokenType.COLUMN_NAME)  // Source column with byte sizes
+            .addToken("timeDurationColumn", TokenType.COLUMN_NAME)  // Source column with time durations
+            .addToken("totalSizeColumn", TokenType.COLUMN_NAME)  // Target column name for total size
+            .addToken("totalTimeColumn", TokenType.COLUMN_NAME)  // Target column name for total/average time
+            .optionalToken("outputSizeUnit", TokenType.TEXT)  // Optional output unit (MB, GB, etc.)
+            .optionalToken("outputTimeUnit", TokenType.TEXT)  // Optional output unit (seconds, minutes, etc.)
+            .optionalToken("aggregationType", TokenType.TEXT)  // Optional (total, average)
+            .build();
+}
 
     /**
      * @return a instance of <code>UsageDefinition</code> object.
