@@ -392,6 +392,17 @@
           </plugin>
 
           <plugin>
+  <groupId>org.apache.rat</groupId>
+  <artifactId>apache-rat-plugin</artifactId>
+  <version>0.10</version>
+  <configuration>
+    <excludes>
+      <exclude>path/to/excluded/file</exclude>
+    </excludes>
+  </configuration>
+</plugin>
+
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-release-plugin</artifactId>
             <version>2.5.3</version>
