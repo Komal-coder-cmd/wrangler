@@ -59,7 +59,12 @@
     <url>https://github.com/data-integrations/wrangler.git</url>
     <tag>HEAD</tag>
   </scm>
-
+ <configuration>
+    <target xmlns:mvn="http://maven.apache.org/ANTRUN">
+      <mvn:attachartifact/>
+      <mvn:dependencyfilesets/>
+    </target>
+  </configuration>
   <distributionManagement>
     <repository>
       <id>sonatype.release</id>
