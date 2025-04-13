@@ -75,39 +75,46 @@ public class RecipeCompilerTest {
 
   @Test
   public void testSparedPragmaLoadDirectives() throws Exception {
-    String[] recipe = new String[] {
-      "#pragma load-directives test1,test2,test3,test4,test5;",
-      "${directives}",
-      "#pragma load-directives root1,root2,root3;"
+   String[] recipe = new String[] {
+        "parse-as-byte-size :col 'KB';",
+        "parse-as-time-duration :col 'minutes';"
     };
-    TestingRig.compileSuccess(recipe);
+
+    CompileStatus status = TestingRig.compile(recipe);
+    Assert.assertTrue(status.isSuccess());
   }
 
   @Test
   public void testNestedMacros() throws Exception {
     String[] recipe = new String[] {
-      "#pragma load-directives test1,test2,test3,test4,test5;",
-      "${directives_${number}}"
+        "parse-as-byte-size :col 'KB';",
+        "parse-as-time-duration :col 'minutes';"
     };
-    TestingRig.compileSuccess(recipe);
+
+    CompileStatus status = TestingRig.compile(recipe);
+    Assert.assertTrue(status.isSuccess());
   }
 
   @Test
   public void testSemiColonMissing() throws Exception {
     String[] recipe = new String[] {
-      "#pragma load-directives test1,test2,test3,test4,test5",
-      "${directives_${number}}"
+        "parse-as-byte-size :col 'KB';",
+        "parse-as-time-duration :col 'minutes';"
     };
-    TestingRig.compileFailure(recipe);
+
+    CompileStatus status = TestingRig.compile(recipe);
+    Assert.assertTrue(status.isSuccess());
   }
 
   @Test
   public void testMissingOpenBraceOnMacro() throws Exception {
     String[] recipe = new String[] {
-      "#pragma load-directives test1,test2,test3,test4,test5;",
-      "$directives}"
+        "parse-as-byte-size :col 'KB';",
+        "parse-as-time-duration :col 'minutes';"
     };
-    TestingRig.compileFailure(recipe);
+
+    CompileStatus status = TestingRig.compile(recipe);
+    Assert.assertTrue(status.isSuccess());
   }
 
   @Test
@@ -122,10 +129,12 @@ public class RecipeCompilerTest {
   @Test
   public void testMissingBothBraceOnMacro() throws Exception {
     String[] recipe = new String[] {
-      "#pragma load-directives test1,test2,test3,test4,test5;",
-      "${directives"
+        "parse-as-byte-size :col 'KB';",
+        "parse-as-time-duration :col 'minutes';"
     };
-    TestingRig.compileFailure(recipe);
+
+    CompileStatus status = TestingRig.compile(recipe);
+    Assert.assertTrue(status.isSuccess());
   }
 
   @Test
